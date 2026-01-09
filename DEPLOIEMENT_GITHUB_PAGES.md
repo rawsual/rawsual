@@ -94,3 +94,4 @@ Les modifications seront automatiquement déployées sur GitHub Pages en quelque
 - **Les images ne s'affichent pas** : Vérifiez les chemins relatifs dans le HTML
 - **Erreur 404** : Attendez quelques minutes, le déploiement peut prendre du temps
 
+
