@@ -8,6 +8,10 @@
    MOBILE NAVIGATION
    ============================================ */
 @media (max-width: 768px) {
+  /* Décalage pour compenser le header fixe lors du scroll */
+  html {
+    scroll-padding-top: 70px; /* Hauteur approximative du header mobile */
+  }
   /* Menu burger pour mobile */
   .mobile-menu-toggle {
     display: block;
@@ -392,6 +396,11 @@
    MOBILE CONTACT FORM
    ============================================ */
 @media (max-width: 768px) {
+  /* Décalage spécifique pour la section Contact lors du scroll */
+  #contact {
+    scroll-margin-top: 250px; /* Décalage très important pour la section Contact */
+  }
+
   .contact-layout {
     gap: 2rem;
   }
@@ -461,6 +470,20 @@
   #services,
   #about {
     background-attachment: scroll;
+  }
+
+  /* Section À propos - image en dessous du texte sur mobile */
+  #about .section-two-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image {
+    margin-top: 1.5rem;
+  }
+
+  .about-image-content {
+    max-width: 100%;
+    height: auto;
   }
 }
 

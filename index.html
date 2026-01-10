@@ -104,6 +104,13 @@
             et d'image du début à la fin.
           </p>
         </div>
+        <div class="about-image">
+          <img
+            src="./Images/Caméra.png"
+            alt="Équipement vidéo professionnel"
+            class="about-image-content"
+          />
+        </div>
       </div>
     </section>
 
@@ -599,8 +606,21 @@
 
     // Fermer le menu au clic sur un lien
     navLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        closeMobileMenu();
+      link.addEventListener("click", (e) => {
+        // Si c'est le lien Contact, scroller jusqu'en bas de la page
+        if (link.getAttribute("href") === "#contact") {
+          e.preventDefault();
+          closeMobileMenu();
+          // Attendre que le menu se ferme puis scroller jusqu'en bas
+          setTimeout(() => {
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: "smooth"
+            });
+          }, 300);
+        } else {
+          closeMobileMenu();
+        }
       });
     });
 
