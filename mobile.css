@@ -350,6 +350,83 @@
     padding-right: 0;
   }
 
+  /* Portfolio Featured - Projet OqueCbon */
+  .portfolio-featured {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .portfolio-featured-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  /* Inverser l'ordre du screenshot et du bouton uniquement sur mobile */
+  .portfolio-featured-text {
+    display: contents; /* Permet aux enfants de participer directement au flexbox parent */
+  }
+
+  .portfolio-featured-title {
+    order: 1;
+  }
+
+  .portfolio-featured-description {
+    order: 2;
+  }
+
+  .portfolio-featured-stats {
+    order: 3;
+  }
+
+  .portfolio-featured-visual {
+    order: 4; /* L'image vient après le texte mais avant le bouton */
+  }
+
+  .portfolio-featured-link {
+    order: 5; /* Le bouton vient en dernier, après l'image */
+  }
+
+  .portfolio-featured-title {
+    font-size: 1.3rem;
+  }
+
+  .portfolio-featured-description {
+    font-size: 0.9rem;
+  }
+
+  .portfolio-featured-stats {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .stat-item {
+    text-align: center;
+    align-items: center;
+  }
+
+  .stat-number {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  .stat-label {
+    text-align: center;
+  }
+
+  .portfolio-featured-image-placeholder {
+    max-width: 200px;
+  }
+
+  .portfolio-featured-visual img,
+  .portfolio-featured-image {
+    max-width: 200px;
+  }
+
   /* Grille verticale mobile - 2 colonnes avec marges latérales */
   .portfolio-grid-vertical {
     grid-template-columns: repeat(2, minmax(0, 1fr));
