@@ -571,8 +571,8 @@ strong {
 
 .portfolio-grid {
   display: grid;
-  /* 3 colonnes pour optimiser l'espace horizontal */
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* 2 colonnes pour afficher 4 projets en 2 lignes */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
   /* Container très large avec marges latérales minimales */
   max-width: 1800px;
@@ -583,7 +583,7 @@ strong {
 
 /* Grille pour vidéos horizontales (16:9) - projets principaux */
 .portfolio-grid-horizontal {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
 }
 
