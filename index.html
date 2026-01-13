@@ -443,11 +443,11 @@
                   </p>
                   <div class="portfolio-featured-stats">
                     <div class="stat-item">
-                      <span class="stat-number">~4 100</span>
+                      <span class="stat-number" data-value="4100">~0</span>
                       <span class="stat-label">Abonnés cumulés</span>
                     </div>
                     <div class="stat-item">
-                      <span class="stat-number">~2,25M</span>
+                      <span class="stat-number" data-value="4000000">~0</span>
                       <span class="stat-label">Vues cumulées</span>
                     </div>
                   </div>
@@ -458,7 +458,7 @@
                   </div>
                 </div>
                 <div class="portfolio-featured-visual">
-                  <img src="./Images/Screenshot OqueCbon.png" alt="Screenshot du compte OqueCbon sur Instagram" class="portfolio-featured-image" />
+                  <img src="./Images/OqueCbon.png" alt="Screenshot du compte OqueCbon sur Instagram" class="portfolio-featured-image" />
                 </div>
               </div>
             </article>
@@ -732,6 +732,298 @@
         }
       });
     }
+
+    // Animation des compteurs de statistiques
+    function animateCounter(element, targetValue, duration) {
+      const startValue = 0;
+      const startTime = performance.now();
+      const hasTilde = element.textContent.includes('~');
+      
+      function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Fonction d'easing pour un effet plus naturel
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        
+        const currentValue = Math.floor(startValue + (targetValue - startValue) * easeOutQuart);
+        
+        // Formatage du nombre avec espaces pour les milliers
+        const formattedValue = currentValue.toLocaleString('fr-FR').replace(/,/g, ' ');
+        element.textContent = hasTilde ? `~${formattedValue}` : formattedValue;
+        
+        // Flou de mouvement : fort au début, diminue progressivement
+        const blurAmount = Math.max(0, 1.5 * (1 - progress));
+        element.style.filter = `blur(${blurAmount}px)`;
+        element.style.transition = 'filter 0.1s ease-out';
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          // S'assurer que la valeur finale est exacte
+          const finalFormatted = targetValue.toLocaleString('fr-FR').replace(/,/g, ' ');
+          element.textContent = hasTilde ? `~${finalFormatted}` : finalFormatted;
+          // Retirer le flou à la fin
+          element.style.filter = 'blur(0px)';
+        }
+      }
+      
+      requestAnimationFrame(updateCounter);
+    }
+
+    // Observer pour déclencher l'animation quand la section devient visible
+    const statsSection = document.querySelector('.portfolio-featured-stats');
+    if (statsSection) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const statNumbers = entry.target.querySelectorAll('.stat-number[data-value]');
+            
+            // Trouver la valeur maximale pour synchroniser la durée
+            let maxValue = 0;
+            statNumbers.forEach((stat) => {
+              const value = parseInt(stat.getAttribute('data-value'));
+              if (value > maxValue) maxValue = value;
+            });
+            
+            // Durée fixe pour tous les compteurs (1.2 secondes)
+            const duration = 1200;
+            
+            // Animer tous les compteurs en même temps
+            statNumbers.forEach((stat) => {
+              const targetValue = parseInt(stat.getAttribute('data-value'));
+              animateCounter(stat, targetValue, duration);
+            });
+            
+            // Ne plus observer après l'animation
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.3 // Déclenche quand 30% de la section est visible
+      });
+      
+      observer.observe(statsSection);
+    }
+
+    // ============================================
+    // ANIMATIONS ULTRA-SUBTILES ET ÉLÉGANTES
+    // ============================================
+
+    // Système d'animation ultra-subtile (contenu toujours visible)
+    const animateSubtle = (element, options = {}) => {
+      const {
+        delay = 0,
+        direction = 'up',
+        distance = 8,
+        duration = 0.4
+      } = options;
+
+      // Opacité initiale à 0.5 pour garder le contenu visible
+      element.style.opacity = '0.5';
+      element.style.transition = `opacity ${duration}s ease-out, transform ${duration}s ease-out`;
+      
+      const translateMap = {
+        'up': `translateY(${distance}px)`,
+        'down': `translateY(-${distance}px)`,
+        'left': `translateX(${distance}px)`,
+        'right': `translateX(-${distance}px)`,
+        'fade': 'translateY(0)'
+      };
+      
+      element.style.transform = translateMap[direction] || translateMap['up'];
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translate(0, 0)';
+            }, delay);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -30px 0px'
+      });
+      
+      observer.observe(element);
+    };
+
+    // Animation du header au scroll (très subtile)
+    const siteHeader = document.querySelector('.site-header');
+    if (siteHeader) {
+      siteHeader.style.transition = 'background-color 0.3s ease-out, backdrop-filter 0.3s ease-out';
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > 80) {
+          siteHeader.style.backgroundColor = 'rgba(5, 8, 22, 0.85)';
+          siteHeader.style.backdropFilter = 'blur(8px)';
+        } else {
+          siteHeader.style.backgroundColor = 'transparent';
+          siteHeader.style.backdropFilter = 'blur(0px)';
+        }
+      }, { passive: true });
+    }
+
+    // Animation ultra-subtile du hero au chargement
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent) {
+      const heroElements = heroContent.querySelectorAll('.hero-kicker, .hero-title, .hero-subtitle, .hero-tagline, .hero-actions');
+      heroElements.forEach((el, index) => {
+        el.style.opacity = '0.5';
+        el.style.transform = 'translateY(8px)';
+        el.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+        
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 100 + (index * 80));
+      });
+    }
+
+    // Animation ultra-subtile de l'image Davinci (droite uniquement)
+    const heroImageRight = document.querySelector('.hero-image-wrapper-right');
+    if (heroImageRight) {
+      heroImageRight.style.opacity = '0.5';
+      heroImageRight.style.transform = 'translateX(8px)';
+      heroImageRight.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+      
+      setTimeout(() => {
+        heroImageRight.style.opacity = '1';
+        heroImageRight.style.transform = 'translateX(0)';
+      }, 250);
+    }
+
+    // Animation subtile des sections principales
+    const sections = document.querySelectorAll('.section');
+    sections.forEach((section) => {
+      const sectionHeader = section.querySelector('.section-header');
+      if (sectionHeader) {
+        animateSubtle(sectionHeader, { delay: 0, direction: 'up', distance: 8, duration: 0.4 });
+      }
+    });
+
+    // Animation subtile des cartes de services
+    const serviceCards = document.querySelectorAll('.service-card');
+    serviceCards.forEach((card, index) => {
+      animateSubtle(card, { 
+        delay: index * 50, 
+        direction: 'up', 
+        distance: 8,
+        duration: 0.4
+      });
+    });
+
+    // Animation subtile des items de portfolio - déclenchement plus tôt
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    portfolioItems.forEach((item, index) => {
+      item.style.opacity = '0.5';
+      item.style.transform = 'translateY(8px)';
+      item.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translate(0, 0)';
+            }, index * 40);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.05,
+        rootMargin: '0px 0px 150px 0px' // Déclenche plus tôt
+      });
+      
+      observer.observe(item);
+    });
+
+    // Animation subtile de l'image "À propos"
+    const aboutImage = document.querySelector('.about-image');
+    if (aboutImage) {
+      animateSubtle(aboutImage, { delay: 80, direction: 'right', distance: 8, duration: 0.4 });
+    }
+
+    // Animation subtile du texte "À propos"
+    const aboutText = document.querySelector('#about .section-two-cols > div:first-child');
+    if (aboutText) {
+      animateSubtle(aboutText, { delay: 0, direction: 'left', distance: 8, duration: 0.4 });
+    }
+
+    // Animation subtile du projet OqueCbon
+    const portfolioFeatured = document.querySelector('.portfolio-featured');
+    if (portfolioFeatured) {
+      const featuredContent = portfolioFeatured.querySelector('.portfolio-featured-content');
+      if (featuredContent) {
+        animateSubtle(featuredContent, { delay: 0, direction: 'up', distance: 10, duration: 0.5 });
+      }
+    }
+
+    // Animation subtile du formulaire de contact
+    const contactFormElement = document.querySelector('#contact form');
+    if (contactFormElement) {
+      const formElements = contactFormElement.querySelectorAll('input, textarea, button');
+      formElements.forEach((el, index) => {
+        animateSubtle(el, { 
+          delay: index * 30, 
+          direction: 'up', 
+          distance: 6,
+          duration: 0.3
+        });
+      });
+    }
+
+    // Animation subtile des titres secondaires
+    const secondaryTitles = document.querySelectorAll('.portfolio-secondary-title, .section-intro');
+    secondaryTitles.forEach((title) => {
+      animateSubtle(title, { delay: 30, direction: 'fade', distance: 0, duration: 0.4 });
+    });
+
+    // Hover ultra-subtil sur les boutons (légère luminosité)
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach((btn) => {
+      btn.addEventListener('mouseenter', function() {
+        this.style.filter = 'brightness(1.1)';
+        this.style.transform = 'scale(1.02)';
+        this.style.transition = 'filter 0.2s ease-out, transform 0.2s ease-out';
+      });
+      
+      btn.addEventListener('mouseleave', function() {
+        this.style.filter = 'brightness(1)';
+        this.style.transform = 'scale(1)';
+      });
+    });
+
+    // Hover ultra-subtil sur les liens de navigation
+    const navLinksHover = document.querySelectorAll('.main-nav a');
+    navLinksHover.forEach((link) => {
+      link.addEventListener('mouseenter', function() {
+        this.style.opacity = '0.8';
+        this.style.transition = 'opacity 0.2s ease-out';
+      });
+      
+      link.addEventListener('mouseleave', function() {
+        this.style.opacity = '1';
+      });
+    });
+
+    // Hover ultra-subtil sur les cartes de portfolio (scale très discret)
+    portfolioItems.forEach((item) => {
+      const thumbnail = item.querySelector('.video-thumbnail');
+      if (thumbnail) {
+        item.addEventListener('mouseenter', function() {
+          thumbnail.style.transform = 'scale(1.01)';
+          thumbnail.style.transition = 'transform 0.3s ease-out';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+          thumbnail.style.transform = 'scale(1)';
+        });
+      }
+    });
   </script>
 </body>
 </html>
